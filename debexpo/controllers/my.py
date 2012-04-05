@@ -279,6 +279,17 @@ class MyController(BaseController):
         # Enable the form to show information on the user's GPG key.
         if self.user.gpg is not None:
             c.currentgpg = c.user.gpg_id
+            requiredkeystrength = int(config['debexpo.gpg_minkeystrength'])
+            keystrength = self.gnupg.extract_key_strength(c.currentgpg)
+            if keystrength < requiredkeystrength:
+                log.debug("Key strength unacceptable in Debian Keyring")
+                log.debug("Key Strength : "+str(keystrength))
+                log.debug("Required Key Strength : "+str(requiredkeystrength))
+                c.gpg_strength_error_message = "The key strength is insufficient\
+                to be acceptable in Debian Keyring. Minimum required is "\
+                + str(requiredkeystrength) + " bits."
+            else:
+                c.gpg_strength_error_message = None
         else:
             c.currentgpg = None
 
