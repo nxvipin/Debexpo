@@ -39,6 +39,10 @@
 
 % if c.currentgpg:
 
+    % if c.gpg_strength_error_message:
+        <p><span class="error-message">${ c.gpg_strength_error_message }</span></p>
+    % endif
+
     <tr>
       <td width="20%">${ _('Current GPG key') }:</td>
       <td width="80%">${ c.currentgpg }</td>
